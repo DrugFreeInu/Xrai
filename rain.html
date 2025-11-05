@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Random Rain</title>
+<title>xRain</title>
 <style>
   html, body {
     margin: 0;
@@ -12,21 +12,24 @@
     width: 100vw;
     background: #111;
     overflow: hidden;
+    font-family: monospace;
   }
 
   .drop {
     position: absolute;
-    width: 2px;
-    height: 15px;
-    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
     animation-name: fall;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    user-select: none;
+    pointer-events: none;
   }
 
   @keyframes fall {
-    0% { transform: translateY(-20px); }
-    100% { transform: translateY(100vh); }
+    0% { transform: translateY(-2rem); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
   }
 </style>
 </head>
@@ -34,14 +37,15 @@
 
 <script>
   const dropCount = 100;
-  const colors = ['#fff', '#7FDBFF']; // white or X-ray light blue
+  const colors = ['#fff', '#7FDBFF']; // white or X-ray blue
 
   for (let i = 0; i < dropCount; i++) {
     const drop = document.createElement('div');
     drop.className = 'drop';
+    drop.textContent = 'X'; // xRain drop
     
     // random color
-    drop.style.background = colors[Math.floor(Math.random() * colors.length)];
+    drop.style.color = colors[Math.floor(Math.random() * colors.length)];
     // random horizontal position
     drop.style.left = Math.random() * 100 + 'vw';
     // random animation duration (fall speed)
