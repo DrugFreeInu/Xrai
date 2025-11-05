@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X Rain Matrix - Hyper-Realistic Animated Symphony</title>
+    <style>
+        /* Global Reset & Cosmic Canvas */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: radial-gradient(ellipse at center, #0a001f 0%, #000000 100%); font-family: 'Arial', sans-serif; }
+        
+        /* Master Container with Parallax Depth */
+        .rain-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            perspective: 1200px;
+            perspective-origin: 50% 50%;
+            transform-style: preserve-3d;
+            background: linear-gradient(180deg, rgba(10,0,31,0.95) 0%, rgba(0,0,0,1) 100%);
+            overflow: hidden;
+        }
+
+        /* Individual X Particle - God-Tier Styling */
+        .x-particle {
+            position: absolute;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: clamp(18px, 4vw, 42px);
+            color: transparent;
+            text-shadow: 
+                0 0 8px rgba(0, 255, 255, 0.9),
+                0 0 16px rgba(0, 200, 255, 0.7),
+                0 0 24px rgba(0, 150, 255, 0.5),
+                0 0 32px rgba(0, 100, 255, 0.3),
+                0 0 48px rgba(0, 50, 255, 0.2);
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 255, 1) 0%,
+                rgba(0, 200, 255, 0.95) 25%,
+                rgba(0, 150, 255, 0.9) 50%,
+                rgba(0, 100, 255, 0.85) 75%,
+                rgba(0, 50, 255, 0.8) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.8)) 
+                    drop-shadow(0 0 24px rgba(0, 200, 255, 0.6))
+                    blur(0.5px);
+            user-select: none;
+            pointer-events: none;
+            will-change: transform, opacity;
+            animation: fall linear infinite, spin 3s linear infinite, pulse 2s ease-in-out infinite alternate;
+            transform-style: preserve-3d;
+        }
+
+        /* Core Falling Animation - Variable Speed & Parallax */
+        @keyframes fall {
+            0% {
+                transform: translate3d(0, -150vh, 0) rotateX(0deg) rotateY(0deg) scale(1);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate3d(var(--drift), 120vh, var(--depth)) rotateX(360deg) rotateY(720deg) scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        /* 3D Spin with Wobble & Turbulence */
+        @keyframes spin {
+            0% { transform: rotateZ(0deg) rotateX(0deg); }
+            25% { transform: rotateZ(90deg) rotateX(15deg); }
+            50% { transform: rotateZ(180deg) rotateX(-10deg); }
+            75% { transform: rotateZ(270deg) rotateX(20deg); }
+            100% { transform: rotateZ(360deg) rotateX(0deg); }
+        }
+
+        /* Pulsating Glow Intensity */
+        @keyframes pulse {
+            0% { 
+                text-shadow: 
+                    0 0 8px rgba(0,255,255,0.9),
+                    0 0 16px rgba(0,200,255,0.7),
+                    0 0 24px rgba(0,150,255,0.5);
+                filter: drop-shadow(0 0 12px rgba(0,255,255,0.8)) blur(0.5px);
+            }
+            100% { 
+                text-shadow: 
+                    0 0 12px rgba(0,255,255,1),
+                    0 0 24px rgba(0,200,255,0.9),
+                    0 0 36px rgba(0,150,255,0.7),
+                    0 0 48px rgba(0,100,255,0.5);
+                filter: drop-shadow(0 0 20px rgba(0,255,255,1)) blur(0.8px);
+            }
+        }
+
+        /* Fade Zone at Bottom - Atmospheric Dissipation */
+        .fade-zone {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 40vh;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, transparent 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Subtle Background Grid for Depth */
+        .grid-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 100, 200, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 100, 200, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridPulse 20s linear infinite;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.25; transform: scale(1.02); }
+        }
+
+        /* Dynamic JS-Injected Styles will override these */
+    </style>
+</head>
+<body>
+    <div class="rain-container" id="rainContainer">
+        <div class="grid-bg"></div>
+        <div class="fade-zone"></div>
+    </div>
+
+    <script>
+        // Hyper-Advanced X Rain Engine - 200+ Particles with Physics & Chaos
+        const container = document.getElementById('rainContainer');
+        const particleCount = 220;
+        const maxDuration = 18;
+        const minDuration = 8;
+        const maxSize = 42;
+        const minSize = 18;
+
+        // Pre-generate particle pool for zero GC
+        const particlePool = [];
+        for (let i = 0; i < particleCount; i++) {
+            const x = document.createElement('div');
+            x.className = 'x-particle';
+            x.textContent = 'X';
+            container.appendChild(x);
+            particlePool.push(x);
+        }
+
+        // Initialize particles with unique physics
+        function initParticle(p, index) {
+            const duration = minDuration + Math.random() * (maxDuration - minDuration);
+            const delay = Math.random() * 15;
+            const size = minSize + Math.random() * (maxSize - minSize);
+            const startX = Math.random() * 120 - 10; // -10% to 110% for edge overflow
+            const drift = (Math.random() - 0.5) * 300;
+            const depth = (Math.random() - 0.5) * 600;
+            const hueShift = 180 + Math.random() * 60; // Cyan to blue spectrum
+            const spinSpeed = 2 + Math.random() * 3;
+            const wobble = Math.random() * 30;
+
+            // Apply styles
+            p.style.fontSize = `${size}px`;
+            p.style.left = `${startX}vw`;
+            p.style.animationDuration = `${duration}s, ${spinSpeed}s, ${2 + Math.random()}s`;
+            p.style.animationDelay = `${delay}s, 0s, ${Math.random()}s`;
+            p.style.setProperty('--drift', `${drift}px`);
+            p.style.setProperty('--depth', `${depth}px`);
+
+            // Advanced color gradient per particle
+            const grad1 = `rgba(0, ${255 - Math.random()*50}, 255, 1)`;
+            const grad2 = `rgba(0, ${200 - Math.random()*50}, 255, 0.95)`;
+            const grad3 = `rgba(0, ${150 - Math.random()*50}, 255, 0.9)`;
+            p.style.background = `linear-gradient(45deg, ${grad1} 0%, ${grad2} 50%, ${grad3} 100%)`;
+            p.style.webkitBackgroundClip = 'text';
+            p.style.backgroundClip = 'text';
+
+            // 3D turbulence via custom properties
+            p.style.setProperty('--wobble', `${wobble}deg`);
+            p.style.animation = `
+                fall ${duration}s linear ${delay}s infinite,
+                spin ${spinSpeed}s linear infinite,
+                pulse 2s ease-in-out infinite alternate,
+                wobble ${3 + Math.random()}s ease-in-out infinite
+            `;
+
+            // Inject wobble keyframes dynamically
+            injectWobbleKeyframes(p, wobble);
+        }
+
+        // Dynamic per-particle wobble keyframes
+        function injectWobbleKeyframes(el, intensity) {
+            const name = `wobble-${Date.now()}-${Math.random()}`;
+            const kf = `
+                @keyframes ${name} {
+                    0%, 100% { transform: rotateZ(0deg) skewX(0deg); }
+                    25% { transform: rotateZ(${intensity}deg) skewX(-5deg); }
+                    50% { transform: rotateZ(0deg) skewX(5deg); }
+                    75% { transform: rotateZ(-${intensity}deg) skewX(-3deg); }
+                }
+            `;
+            const styleSheet = document.styleSheets[0];
+            styleSheet.insertRule(kf, styleSheet.cssRules.length);
+            el.style.animation += `, ${name} ${3 + Math.random()}s ease-in-out infinite`;
+        }
+
+        // Initialize all particles
+        particlePool.forEach((p, i) => initParticle(p, i));
+
+        // Continuous respawn system
+        setInterval(() => {
+            const inactive = particlePool.filter(p => {
+                const rect = p.getBoundingClientRect();
+                return rect.top > window.innerHeight + 100;
+            });
+            inactive.forEach(p => {
+                p.remove();
+                const newP = document.createElement('div');
+                newP.className = 'x-particle';
+                newP.textContent = 'X';
+                container.appendChild(newP);
+                initParticle(newP, 0);
+                const idx = particlePool.indexOf(p);
+                if (idx > -1) particlePool[idx] = newP;
+            });
+        }, 100);
+
+        // Mouse/Touch parallax interaction
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 2 - 1;
+            const y = (e.clientY / window.innerHeight) * 2 - 1;
+            container.style.transform = `rotateY(${x * 8}deg) rotateX(${y * -6}deg)`;
+        });
+
+        // Touch support
+        document.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const x = (touch.clientX / window.innerWidth) * 2 - 1;
+            const y = (touch.clientY / window.innerHeight) * 2 - 1;
+            container.style.transform = `rotateY(${x * 10}deg) rotateX(${y * -8}deg)`;
+        });
+
+        // Performance: Throttle resize
+        window.addEventListener('resize', () => {
+            clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(() => {
+                particlePool.forEach((p, i) => {
+                    p.remove();
+                    setTimeout(() => initParticle(p, i), i * 10);
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>
