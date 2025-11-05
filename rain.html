@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Rain</title>
+<style>
+  /* Full viewport, vertical orientation */
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    background: #111;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .drop {
+    position: absolute;
+    color: #0f0;
+    font-size: 1.2rem;
+    font-family: monospace;
+    user-select: none;
+    pointer-events: none;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-2rem); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<script>
+  const symbols = ['1','2','3','4','5','6','7','8','9','0','+','-','×','÷','=','√','π'];
+  const dropCount = 50; // number of raindrops
+
+  for(let i = 0; i < dropCount; i++) {
+    const drop = document.createElement('div');
+    drop.className = 'drop';
+    drop.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    document.body.appendChild(drop);
+
+    const leftPos = Math.random() * 100; // random horizontal position
+    const duration = 3 + Math.random() * 4; // random fall duration 3-7s
+    const delay = Math.random() * 5; // random start delay
+
+    drop.style.left = leftPos + 'vw';
+    drop.style.animationDuration = duration + 's';
+    drop.style.animationDelay = delay + 's';
+  }
+</script>
+
+</body>
+</html>
