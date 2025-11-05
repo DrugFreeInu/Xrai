@@ -19,20 +19,14 @@
     position: absolute;
     font-size: 1.2rem;
     font-weight: bold;
-    animation: fall linear infinite, spin linear infinite;
     user-select: none;
     pointer-events: none;
   }
 
-  @keyframes fall {
-    0% { transform: translateY(-2rem); opacity: 0; }
+  @keyframes fallSpin {
+    0% { transform: translateY(-2rem) rotate(0deg); opacity: 0; }
     10% { opacity: 1; }
-    100% { transform: translateY(100vh); opacity: 0; }
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
   }
 </style>
 </head>
@@ -40,22 +34,26 @@
 
 <script>
   const dropCount = 100;
-  const colors = ['#fff', '#7FDBFF'];
+  const colors = ['#fff', '#7FDBFF']; // white or X-ray blue
 
   for (let i = 0; i < dropCount; i++) {
     const drop = document.createElement('div');
     drop.className = 'drop';
     drop.textContent = 'X';
-    
+
+    // random color
     drop.style.color = colors[Math.floor(Math.random() * colors.length)];
+    // random horizontal position
     drop.style.left = Math.random() * 100 + 'vw';
-    
-    const fallDuration = 2 + Math.random() * 3;
-    const delay = Math.random() * 5;
-    drop.style.animationDuration = `${fallDuration}s, ${1 + Math.random() * 2}s`; // fall, spin
-    drop.style.animationDelay = `${delay}s, ${delay}s`;
-    
+    // random opacity for variation
     drop.style.opacity = 0.4 + Math.random() * 0.6;
+
+    // random animation duration (fall + spin)
+    const duration = 2 + Math.random() * 3;
+    // random start delay
+    const delay = Math.random() * 5;
+
+    drop.style.animation = `fallSpin ${duration}s linear ${delay}s infinite`;
 
     document.body.appendChild(drop);
   }
