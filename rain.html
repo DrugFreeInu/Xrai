@@ -24,8 +24,8 @@
   }
 
   @keyframes fallSpin {
-    0% { transform: translateY(-2rem) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
+    0%   { transform: translateY(-2rem) rotate(0deg); opacity: 0; }
+    10%  { opacity: 1; }
     100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
   }
 </style>
@@ -34,34 +34,31 @@
 
 <script>
   const dropCount = 100;
-  const colors = ['#fff', '#7FDBFF']; // white or X-ray blue
+  const colors = ['#fff', '#7FDBFF'];
 
-  function createDrop() {
+  for (let i = 0; i < dropCount; i++) {
     const drop = document.createElement('div');
     drop.className = 'drop';
     drop.textContent = 'X';
 
-    // random color
+    // random color + position
     drop.style.color = colors[Math.floor(Math.random() * colors.length)];
-    // random horizontal position
     drop.style.left = Math.random() * 100 + 'vw';
-    // random vertical start position (so they don’t all start aligned at top)
-    drop.style.top = Math.random() * 100 + 'vh';
-    // random opacity for variation
     drop.style.opacity = 0.4 + Math.random() * 0.6;
 
-    // random animation duration (fall + spin)
     const duration = 2 + Math.random() * 3;
-    // random start delay
-    const delay = Math.random() * 5;
+    const delay = Math.random() * duration; // random phase of animation
 
-    drop.style.animation = `fallSpin ${duration}s linear ${delay}s infinite`;
+    // instead of all starting from top, start each drop at a random progress point
+    const progress = Math.random(); // 0–1 of animation
+    const startY = progress * 100; // percentage of screen height
+    const rotateStart = 360 * progress;
+    drop.style.transform = `translateY(${startY}vh) rotate(${rotateStart}deg)`;
+
+    drop.style.animation = `fallSpin ${duration}s linear ${-delay}s infinite`; 
+    // negative delay = mid-animation start (already raining)
 
     document.body.appendChild(drop);
-  }
-
-  for (let i = 0; i < dropCount; i++) {
-    createDrop();
   }
 </script>
 
