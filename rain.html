@@ -36,7 +36,7 @@
   const dropCount = 100;
   const colors = ['#fff', '#7FDBFF']; // white or X-ray blue
 
-  for (let i = 0; i < dropCount; i++) {
+  function createDrop() {
     const drop = document.createElement('div');
     drop.className = 'drop';
     drop.textContent = 'X';
@@ -45,6 +45,8 @@
     drop.style.color = colors[Math.floor(Math.random() * colors.length)];
     // random horizontal position
     drop.style.left = Math.random() * 100 + 'vw';
+    // random vertical start position (so they don’t all start aligned at top)
+    drop.style.top = Math.random() * 100 + 'vh';
     // random opacity for variation
     drop.style.opacity = 0.4 + Math.random() * 0.6;
 
@@ -56,6 +58,10 @@
     drop.style.animation = `fallSpin ${duration}s linear ${delay}s infinite`;
 
     document.body.appendChild(drop);
+  }
+
+  for (let i = 0; i < dropCount; i++) {
+    createDrop();
   }
 </script>
 
